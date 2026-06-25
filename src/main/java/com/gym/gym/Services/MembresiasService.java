@@ -1,0 +1,83 @@
+package com.gym.gym.Services;
+
+import org.springframework.stereotype.Service;
+
+import com.gym.gym.Model.Estado;
+import com.gym.gym.Model.MembresiasModel;
+import com.gym.gym.Model.MiembrosModel;
+import com.gym.gym.Respository.MembresiaRespository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class MembresiasService {
+    private final MembresiaRespository membresiasRepository;
+    private final MiembrosService miembrosService;
+
+    public MembresiasService(MembresiaRespository membresiasRepository, MiembrosService miembrosService) {
+        this.membresiasRepository = membresiasRepository;
+        this.miembrosService = miembrosService;
+    }
+
+    public MembresiasModel crearMembresia(Long miembroId, MembresiasModel membresia) {
+        Optional<MembresiasModel> membresiaExistente = membresiasRepository.FindByMiembroId(miembroId);
+        if (membresiaExistente.isPresent()) {
+            throw new IllegalArgumentException("El miembro ya tiene una membresía registrada");
+        }
+
+        Optional<MiembrosModel> miembroOptional = miembrosService.obtenerPorId(miembroId);
+        MiembrosModel miembro = miembroOptional.get();
+        membresia.setMiembro(miembro);
+        return membresiasRepository.save(membresia);
+    }
+    
+    public Optional<MembresiasModel> obtenerMembresiaPorMiembroId(Long miembroId) {
+    Optional<MembresiasModel> membresia = membresiasRepository.FindByMiembroId(miembroId);
+    if (membresia.isEmpty()) {
+        throw new IllegalArgumentException("Membresía no encontrada para el miembro con ID: " + miembroId);
+    }
+    return membresia;
+    }
+
+    public List<MembresiasModel> obtenerMembresias() {
+        List<MembresiasModel> membresias = membresiasRepository.findAll();
+        return membresias;
+    }
+
+    public MembresiasModel actualizarMembresia(Long miembroID, MembresiasModel membresiaActualizada) {
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroID);
+        if (membresiaOptional.isEmpty()) {
+            throw new IllegalArgumentException("Membresía no encontrada");
+        }
+        MembresiasModel membresiaExistente = membresiaOptional.get();
+        membresiaExistente.setTipoMembresia(membresiaActualizada.getTipoMembresia());
+        membresiaExistente.setFechaInicio(membresiaActualizada.getFechaInicio());
+        membresiaExistente.setFechaFin(membresiaActualizada.getFechaFin());
+        membresiaExistente.setEstado(membresiaActualizada.getEstado());
+        membresiaExistente.setPrecio(membresiaActualizada.getPrecio());
+        MembresiasModel membresiactual = membresiasRepository.save(membresiaExistente);
+        return membresiactual;
+    }
+
+    public void eliminarMembresia(Long miembroId) {
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroId);
+        if (membresiaOptional.isEmpty()) {
+            throw new IllegalArgumentException("Membresía no encontrada");
+        }
+        MembresiasModel membresia = membresiaOptional.get();
+        membresiasRepository.delete(membresia);
+    }
+
+    public boolean actualizarEstadoMembresia(Long miembroId, Estado nuevoEstado) {
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroId);
+        if (membresiaOptional.isEmpty()) {
+            throw new IllegalArgumentException("Membresía no encontrada");
+        }
+        MembresiasModel membresia = membresiaOptional.get();
+        membresia.setEstado(nuevoEstado);
+        membresiasRepository.save(membresia);
+        return true;
+    }
+
+}
