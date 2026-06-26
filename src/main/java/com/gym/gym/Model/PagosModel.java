@@ -28,6 +28,7 @@ public class PagosModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    
     @ManyToOne
     @JoinColumn(name = "membresia_id", nullable = false)
     @JsonIgnore

@@ -79,5 +79,10 @@ public class MembresiasService {
         membresiasRepository.save(membresia);
         return true;
     }
-
+    public MembresiasModel extenderMembresia(Long membresiaId, int dias) {
+    Optional<MembresiasModel> membresiaOptional = obtenerMembresiaPorMiembroId(membresiaId); 
+    MembresiasModel membresia = membresiaOptional.get();
+    membresia.setFechaFin(membresia.getFechaFin().plusDays(dias));
+    return membresiasRepository.save(membresia);
+    }
 }
