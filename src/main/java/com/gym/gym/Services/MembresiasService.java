@@ -32,7 +32,7 @@ public class MembresiasService {
         return membresiasRepository.save(membresia);
     }
     
-    public Optional<MembresiasModel> obtenerMembresiaPorMiembroId(Long miembroId) {
+    public Optional<MembresiasModel> obtenerMembresiaDelMiembro(Long miembroId) {
     Optional<MembresiasModel> membresia = membresiasRepository.FindByMiembroId(miembroId);
     if (membresia.isEmpty()) {
         throw new IllegalArgumentException("Membresía no encontrada para el miembro con ID: " + miembroId);
@@ -80,9 +80,13 @@ public class MembresiasService {
         return true;
     }
     public MembresiasModel extenderMembresia(Long membresiaId, int dias) {
-    Optional<MembresiasModel> membresiaOptional = obtenerMembresiaPorMiembroId(membresiaId); 
-    MembresiasModel membresia = membresiaOptional.get();
+    MembresiasModel membresia = obtenerMembresiaPorId(membresiaId); 
     membresia.setFechaFin(membresia.getFechaFin().plusDays(dias));
     return membresiasRepository.save(membresia);
+    }
+
+    public MembresiasModel obtenerMembresiaPorId(Long id) {
+    return membresiasRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Membresía no encontrada con ID: " + id));
     }
 }

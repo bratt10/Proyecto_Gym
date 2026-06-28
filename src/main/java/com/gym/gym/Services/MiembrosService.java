@@ -73,7 +73,7 @@ public class MiembrosService {
     }
     //public MiembrosModel obtenerPorid2(Long id) {
     //  return miembrosRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Miembro no encontrado"));
-    public MiembrosModel actualizarMiembROMiembros(Long id, MiembrosModel miembroinformacioAactualizar){
+    public MiembrosModel actualizarMiembroMiembros(Long id, MiembrosModel miembroinformacioAactualizar){
         Optional<MiembrosModel> miembroID = miembrosRepository.findById(id);
         if (miembroID.isEmpty()) {
             throw new IllegalArgumentException("No existe este miembro");
@@ -99,8 +99,7 @@ public class MiembrosService {
         }
         
         public boolean actualizarEstadoMiembro(Long id, Estado nuevoEstado) {
-            Optional<MiembrosModel> miembro = miembrosRepository.findById(id);
-            MiembrosModel miembroReal = miembro.get();
+            MiembrosModel miembroReal = miembrosRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Miembro no encontrado"));
             miembroReal.setEstado(nuevoEstado);
             miembrosRepository.save(miembroReal);
             return true;

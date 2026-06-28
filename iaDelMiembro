@@ -1,0 +1,11 @@
+[33mcommit 2ac42551665f1b3366e989c7bc83e516dce7d16f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Bratt Diaz <bratt565699@gmail.com>
+Date:   Thu Jun 25 22:39:38 2026 -0500
+
+    agrego servicio pagos
+
+[33mcommit 93cfc740aba36df51d6529b0b7b2ea0fafef5551[m
+Author: Bratt Diaz <bratt565699@gmail.com>
+Date:   Wed Jun 24 23:05:20 2026 -0500
+
+    Primer commit: estructura base del proyecto GymManager
