@@ -44,7 +44,7 @@ public class MiembrosService {
         } else if(miebre.getFechaNacimiento().isAfter(LocalDate.now())){
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser futura");
         }
-        EntrenadoresModel entrenador = entrenadorService.obtenerEntrandorPorId(entrenadorId);
+        EntrenadoresModel entrenador = entrenadorService.obtenerEntrenadorPorId(entrenadorId);
         if (entrenador == null || entrenador.getEstado() != Estado.ACTIVO) {
             throw new IllegalArgumentException("El entrenador no está activo o no existe");
         }

@@ -25,7 +25,7 @@ public class MiembroController {
         this.miembrosService = miembrosService;
     }
 
-    @PostMapping
+    @PostMapping ("/{entrenadorId}")
     public ResponseEntity<?> postCrearMiembro(@RequestBody MiembrosModel miembro, @PathVariable Long entrenadorId) {        
         try {
             MiembrosModel nuevoMiembro = miembrosService.crearMiembro(miembro, entrenadorId);

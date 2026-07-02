@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Services.MembresiasService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -21,7 +25,7 @@ public class MembresiaController {
         this.membresiasService = membresiasService;
     }
 
-    @PostMapping
+    @PostMapping("/{miembroID}")
     public ResponseEntity<?> postcrearMembresia(@RequestBody MembresiasModel membresia, @PathVariable Long miembroID){
         try {
            MembresiasModel membresiacreada = membresiasService.crearMembresia(miembroID, membresia);
@@ -45,8 +49,8 @@ public class MembresiaController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getmostrarTodos() {
+    @GetMapping
+       public ResponseEntity<?> getmostrarTodos() {
         try {
             return ResponseEntity.ok(membresiasService.obtenerMembresias());
         } catch (IllegalArgumentException e) {
@@ -55,6 +59,32 @@ public class MembresiaController {
             return ResponseEntity.status(500).body("Error interno del servidor");
         }
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<?> putactualizarmembresia(@RequestBody MembresiasModel membresia, @PathVariable Long id) {
+        try {
+            MembresiasModel membresiaactualizada = membresiasService.actualizarMembresia(id, membresia);
+            return ResponseEntity.ok(membresiaactualizada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e){
+            return ResponseEntity.status(500).body("Error interno del servidor");
+        }
+
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletemembresia(@PathVariable Long id){
+         try {
+            membresiasService.eliminarMembresia(id);
+            return ResponseEntity.ok("Miembro eliminado exitosamente");
+         } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+         } catch(Exception e){
+            return ResponseEntity.status(500).body("Error interno del servidor");
+        }
+
+    }
+        
     
     
 }

@@ -42,7 +42,7 @@ public class EntrenadorService {
         return entrenadorRepository.findAll();
     }
 
-    public EntrenadoresModel obtenerEntrandorPorId(Long id) {
+    public EntrenadoresModel obtenerEntrenadorPorId(Long id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("El ID del entrenador no es válido");
         }
@@ -57,7 +57,7 @@ public class EntrenadorService {
     }
 
     public boolean cambiarEstadoEntrenador(Long id, Estado estado) {
-        EntrenadoresModel entrenador = obtenerEntrandorPorId(id);
+        EntrenadoresModel entrenador = obtenerEntrenadorPorId(id);
         if (entrenador == null) {
             throw new IllegalArgumentException("Entrenador no encontrado");
         }
@@ -67,7 +67,7 @@ public class EntrenadorService {
     }
 
     public EntrenadoresModel actualizarEntrenador(Long id, EntrenadoresModel entrenador){
-        EntrenadoresModel entrenadorExistente = obtenerEntrandorPorId(id);
+        EntrenadoresModel entrenadorExistente = obtenerEntrenadorPorId(id);
         if(entrenador.getNombre() != null && !entrenador.getNombre().isEmpty()){
             entrenadorExistente.setNombre(entrenador.getNombre());
         }
@@ -84,7 +84,7 @@ public class EntrenadorService {
     }
     
     public boolean consultarEstadoActivoEntrenador(Long id) {
-        EntrenadoresModel entrenador = obtenerEntrandorPorId(id);
+        EntrenadoresModel entrenador = obtenerEntrenadorPorId(id);
         if (entrenador == null) {
             throw new IllegalArgumentException("Entrenador no encontrado");
         }
