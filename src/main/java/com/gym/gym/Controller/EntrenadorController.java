@@ -76,7 +76,6 @@ public class EntrenadorController {
     @PatchMapping ("/{id}/estado")
     public ResponseEntity<?> postCambiarEstadoEntrenador(@PathVariable Long id, @RequestBody Estado nuevoEstado) {
         try {
-            boolean estadoCambiado = entrenadorService.cambiarEstadoEntrenador(id, nuevoEstado);
             return ResponseEntity.ok("Estado del entrenador cambiado correctamente");            
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
