@@ -21,7 +21,7 @@ public class MembresiasService {
     }
 
     public MembresiasModel crearMembresia(Long miembroId, MembresiasModel membresia) {
-        Optional<MembresiasModel> membresiaExistente = membresiasRepository.FindByMiembroId(miembroId);
+        Optional<MembresiasModel> membresiaExistente = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaExistente.isPresent()) {
             throw new IllegalArgumentException("El miembro ya tiene una membresía registrada");
         }
@@ -33,7 +33,7 @@ public class MembresiasService {
     }
     
     public Optional<MembresiasModel> obtenerMembresiaDelMiembro(Long miembroId) {
-    Optional<MembresiasModel> membresia = membresiasRepository.FindByMiembroId(miembroId);
+    Optional<MembresiasModel> membresia = membresiasRepository.findByMiembroId(miembroId);
     if (membresia.isEmpty()) {
         throw new IllegalArgumentException("Membresía no encontrada para el miembro con ID: " + miembroId);
     }
@@ -46,7 +46,7 @@ public class MembresiasService {
     }
 
     public MembresiasModel actualizarMembresia(Long miembroID, MembresiasModel membresiaActualizada) {
-        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroID);
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroID);
         if (membresiaOptional.isEmpty()) {
             throw new IllegalArgumentException("Membresía no encontrada");
         }
@@ -61,7 +61,7 @@ public class MembresiasService {
     }
 
     public void eliminarMembresia(Long miembroId) {
-        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroId);
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaOptional.isEmpty()) {
             throw new IllegalArgumentException("Membresía no encontrada");
         }
@@ -70,7 +70,7 @@ public class MembresiasService {
     }
 
     public boolean actualizarEstadoMembresia(Long miembroId, Estado nuevoEstado) {
-        Optional<MembresiasModel> membresiaOptional = membresiasRepository.FindByMiembroId(miembroId);
+        Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaOptional.isEmpty()) {
             throw new IllegalArgumentException("Membresía no encontrada");
         }
