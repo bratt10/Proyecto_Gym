@@ -35,6 +35,7 @@ public class EntrenadorService {
         if(entrenador.getEspecialidad() == null || entrenador.getEspecialidad().isEmpty()){
             throw new IllegalArgumentException("La especialidad es obligatoria");
         }
+        entrenador.setEstado(Estado.ACTIVO);
         return entrenadorRepository.save(entrenador);
     } 
 

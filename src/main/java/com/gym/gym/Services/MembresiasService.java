@@ -29,6 +29,7 @@ public class MembresiasService {
         Optional<MiembrosModel> miembroOptional = miembrosService.obtenerPorId(miembroId);
         MiembrosModel miembro = miembroOptional.get();
         membresia.setMiembro(miembro);
+        membresia.setEstado(Estado.ACTIVO);
         return membresiasRepository.save(membresia);
     }
     
