@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.gym.gym.DTO.Request.MiembroRequestDTO;
+import com.gym.gym.DTO.Response.MiembroResponseDTO;
 import com.gym.gym.Model.EntrenadoresModel;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MiembrosModel;
@@ -20,8 +22,32 @@ public class MiembrosService {
         this.miembrosRepository = miembrosRepository;
         this.entrenadorService = entrenadorService;
     }
+    //Convertir DTO a entidad
+    private MiembrosModel convertirDTOaEntidad(MiembroRequestDTO dto, EntrenadoresModel entrenador){
+        MiembrosModel miembro = new MiembrosModel();
+        miembro.setNombre(dto.getNombre());
+        miembro.setApellido(dto.getApellido());
+        miembro.setEmail(dto.getEmail());
+        miembro.setTelefono(dto.getTelefono());
+        miembro.setFechaNacimiento(dto.getFechaNacimiento());
+        miembro.setFechaRegistro(LocalDate.now());
+        miembro.setEstado(Estado.ACTIVO);
+        miembro.setEntrenador(entrenador);
+        return miembro;
+    }
+    //Respuesta DTO 
+    private MiembroResponseDTO convertirEntidadaAResponseDTO(MiembrosModel miembro){
+        MiembroResponseDTO dto = new MiembroResponseDTO();
+        dto.setId(miembro.getId());
+        dto.setNombre(miembro.getNombre());
+        dto.setApellido(miembro.getApellido());
+        dto.setEmail(miembro.getEmail());
+        dto.setTelefono(miembro.getTelefono());
+        dto.setNombreEntrenador(miembro.getEntrenador()!= null ? miembro.getEntrenador().getNombre(): "sin entrenador");
+        return dto;
+    }
 
-    public MiembrosModel crearMiembro(MiembrosModel miebre, Long entrenadorId){
+    public MiembroResponseDTO crearMiembro(MiembroRequestDTO miebre, Long entrenadorId){
        if(miembrosRepository.existsByEmail(miebre.getEmail())){
             throw new IllegalArgumentException("El email ya está registrado");
         }
@@ -31,7 +57,7 @@ public class MiembrosService {
         if(miebre.getApellido() == null || miebre.getApellido().isEmpty()){
             throw new IllegalArgumentException("El apellido es obligatorio");
         }
-        if(miebre.getTelefono() == null || miebre.getTelefono().isEmpty()){
+        if(miebre.getTelefono() == null || miebre.getTelefono().isEmpty()){ 
             throw new IllegalArgumentException("El teléfono es obligatorio");
         } else if(!miebre.getTelefono().matches("[0-9]+")){
             throw new IllegalArgumentException("El teléfono debe tener 10 dígitos");
@@ -43,17 +69,20 @@ public class MiembrosService {
             throw new IllegalArgumentException("La fecha de nacimiento es obligatoria");
         } else if(miebre.getFechaNacimiento().isAfter(LocalDate.now())){
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser futura");
+        }else if(miebre.getFechaNacimiento().isAfter(LocalDate.now().minusYears(18))){
+                throw new IllegalArgumentException("El miembro debe ser mayor de edad");
         }
         EntrenadoresModel entrenador = entrenadorService.obtenerEntrenadorPorId(entrenadorId);
         if (entrenador == null || entrenador.getEstado() != Estado.ACTIVO) {
             throw new IllegalArgumentException("El entrenador no está activo o no existe");
         }
-        miebre.setEntrenador(entrenador);
-        miebre.setEstado(Estado.ACTIVO);
-        miebre.setFechaRegistro(LocalDate.now());
-        return miembrosRepository.save(miebre);
-    
-    
+        if (entrenador.getMiembros().size() >= 10) {
+            throw new IllegalArgumentException("El entrenador ya tiene 10 miembros asignados");
+            
+        }
+        MiembrosModel miebre1 = convertirDTOaEntidad(miebre, entrenador);
+        MiembrosModel miembroGuardado = miembrosRepository.save(miebre1);
+        return convertirEntidadaAResponseDTO(miembroGuardado);    
     }
     
     public List<MiembrosModel> obtenerMiembros() {
@@ -71,8 +100,7 @@ public class MiembrosService {
         }
         return miembro;
     }
-    //public MiembrosModel obtenerPorid2(Long id) {
-    //  return miembrosRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Miembro no encontrado"));
+   
     public MiembrosModel actualizarMiembro(Long id, MiembrosModel miembroinformacioAactualizar){
         Optional<MiembrosModel> miembroID = miembrosRepository.findById(id);
         if (miembroID.isEmpty()) {

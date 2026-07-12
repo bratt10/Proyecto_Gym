@@ -3,6 +3,8 @@ package com.gym.gym.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gym.gym.DTO.Request.MiembroRequestDTO;
+import com.gym.gym.DTO.Response.MiembroResponseDTO;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MiembrosModel;
 import com.gym.gym.Services.MiembrosService;
@@ -26,9 +28,9 @@ public class MiembroController {
     }
 
     @PostMapping ("/{entrenadorId}")
-    public ResponseEntity<?> postCrearMiembro(@RequestBody MiembrosModel miembro, @PathVariable Long entrenadorId) {        
+    public ResponseEntity<?> postCrearMiembro(@RequestBody MiembroRequestDTO miembroDTO, @PathVariable Long entrenadorId) {        
         try {
-            MiembrosModel nuevoMiembro = miembrosService.crearMiembro(miembro, entrenadorId);
+            MiembroResponseDTO nuevoMiembro = miembrosService.crearMiembro(miembroDTO, entrenadorId);
             return ResponseEntity.ok(nuevoMiembro);
         }catch(IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());

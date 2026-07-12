@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.gym.gym.DTO.Request.EntrenadorRequestDTO;
+import com.gym.gym.DTO.Response.EntrenadorResponseDTO;
 import com.gym.gym.Model.EntrenadoresModel;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Respository.EntrenadoresRepository;
@@ -16,7 +18,26 @@ public class EntrenadorService {
         this.entrenadorRepository = entrenadorRepository;
     }
 
-    public EntrenadoresModel crearEntrenador(EntrenadoresModel entrenador) {
+    private EntrenadoresModel convertirDTOaEntidad(EntrenadorRequestDTO dto){
+        EntrenadoresModel entrenadorEntidad = new EntrenadoresModel();
+        entrenadorEntidad.setNombre(dto.getNombre());
+        entrenadorEntidad.setApellido(dto.getApellido());
+        entrenadorEntidad.setEspecialidad(dto.getEspecialidad());
+        entrenadorEntidad.setTelefono(dto.getTelefono());
+        return entrenadorEntidad;
+    }
+
+    private EntrenadorResponseDTO convertirEntidadaAResponseDTO(EntrenadoresModel entrenador){
+        EntrenadorResponseDTO dto = new EntrenadorResponseDTO();
+        dto.setNombre(entrenador.getNombre());
+        dto.setApellido(entrenador.getApellido());
+        dto.setEspecialidad(entrenador.getEspecialidad());
+        dto.setTelefono(entrenador.getTelefono());
+        return dto;
+    }
+
+    public EntrenadorResponseDTO crearEntrenador(EntrenadorRequestDTO dto) {
+        EntrenadoresModel entrenador = convertirDTOaEntidad(dto);
         if ( entrenadorRepository.existsByNombreAndApellido(entrenador.getNombre(), entrenador.getApellido())) {
             throw new IllegalArgumentException("El entrenador ya está registrado");
         }
@@ -36,7 +57,8 @@ public class EntrenadorService {
             throw new IllegalArgumentException("La especialidad es obligatoria");
         }
         entrenador.setEstado(Estado.ACTIVO);
-        return entrenadorRepository.save(entrenador);
+        EntrenadoresModel entrenadorGuardado = entrenadorRepository.save(entrenador);
+        return convertirEntidadaAResponseDTO(entrenadorGuardado);
     } 
 
     public List<EntrenadoresModel> obtenerTodosEntrenadores() {

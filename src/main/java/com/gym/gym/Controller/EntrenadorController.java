@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gym.gym.DTO.Request.EntrenadorRequestDTO;
+import com.gym.gym.DTO.Response.EntrenadorResponseDTO;
 import com.gym.gym.Model.EntrenadoresModel;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Services.EntrenadorService;
@@ -27,9 +29,9 @@ public class EntrenadorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postCrearEntrenador(@RequestBody EntrenadoresModel entrenador) {
+    public ResponseEntity<?> postCrearEntrenador(@RequestBody EntrenadorRequestDTO entrenador) {
         try {
-            EntrenadoresModel nuevoEntrenador = entrenadorService.crearEntrenador(entrenador);
+            EntrenadorResponseDTO nuevoEntrenador = entrenadorService.crearEntrenador(entrenador);
             return ResponseEntity.ok(nuevoEntrenador);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
