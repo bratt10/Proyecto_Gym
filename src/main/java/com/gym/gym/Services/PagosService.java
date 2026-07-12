@@ -3,6 +3,8 @@ package com.gym.gym.Services;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.PagosModel;
 import com.gym.gym.Respository.PagosRepository;
@@ -21,9 +23,14 @@ public class PagosService {
         MembresiasModel membresia = membresiasService.obtenerMembresiaPorId(membresiaId);
         pago.setMembresia(membresia);
         pago.setFechaPago(LocalDate.now());
+        if (membresia.getEstado().equals(Estado.ACTIVO)) {
         membresiasService.extenderMembresia(membresiaId, 30); 
         PagosModel pagohecho = pagosRepository.save(pago);
         return pagohecho;
+        } else {
+            throw new IllegalArgumentException("No se puede realizar el pago, la membresía no está activa");    
+        }
+        
     }
 
     public List<PagosModel> obtenerPagosPorMembresiaId(Long membresiaId) {
