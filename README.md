@@ -1,3 +1,4 @@
+<pre>
 Pruebas desde postman consumiento a las APIRest y su respectiva respuesta
 
 Crear un entrenador (No depende de nada)
@@ -63,6 +64,7 @@ Response:
 }
 
 Protocolos GET para obtener datos 
+
 Listar todos los entrenadores
 GET : http://localhost:8080/api/entrenadores
 [
@@ -75,6 +77,7 @@ GET : http://localhost:8080/api/entrenadores
         "estado": "ACTIVO"
     }
 ]
+
 Obtener entrenador por id
 GET : http://localhost:8080/api/entrenadores/1
 [
@@ -87,6 +90,7 @@ GET : http://localhost:8080/api/entrenadores/1
         "estado": "ACTIVO"
     }
 ]
+
 Listar todos los miembros
 GET : http://localhost:8080/api/miembros
 [
@@ -111,6 +115,7 @@ GET : http://localhost:8080/api/miembros
         "estado": "ACTIVO"
     }
 ]
+
 Obtener miembro por id
 GET : http://localhost:8080/api/miembros/2
 {
@@ -123,6 +128,7 @@ GET : http://localhost:8080/api/miembros/2
     "fechaRegistro": "2026-07-09",
     "estado": "ACTIVO"
 }
+
 Ver membresía de un miembro
 GET : http://localhost:8080/api/membresias/2
 {
@@ -163,4 +169,4 @@ PATCH : http://localhost:8080/api/miembros/1/estado
 "INACTIVO"
 Response:
 TRUE
-
+</pre>
