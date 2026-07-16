@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import com.gym.gym.DTO.Request.PagoRequestDTO;
+import com.gym.gym.DTO.Response.PagosResponseDTO;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.PagosModel;
@@ -19,20 +21,38 @@ public class PagosService {
         this.membresiasService = membresiasService;
     }
 
-    public PagosModel crearPago(PagosModel pago, Long membresiaId) {
+    private PagosModel convertirDTOaEntidad(PagoRequestDTO pagoDTO, MembresiasModel membresia) {
+        PagosModel pago = new PagosModel();
+        pago.setMonto(pagoDTO.getMonto());
+        pago.setMetodoPago(pagoDTO.getMetodoPago());
+        pago.setMembresia(membresia);
+        return pago;
+    }
+
+    private PagosResponseDTO convertirEntidadAResponseDTO(PagosModel pagos){
+        PagosResponseDTO dto = new PagosResponseDTO();
+        dto.setNombreMiembro(pagos.getMembresia().getMiembro().getNombre());
+        dto.setMonto(pagos.getMonto());
+        dto.setMetodoPago(pagos.getMetodoPago());
+        dto.setMensaje("Pago registrado exitosamente");
+        return dto;
+    }
+
+    public PagosResponseDTO crearPago(PagoRequestDTO pagoDTO, Long membresiaId) {
         MembresiasModel membresia = membresiasService.obtenerMembresiaPorId(membresiaId);
+        PagosModel pago = convertirDTOaEntidad(pagoDTO, membresia);
         pago.setMembresia(membresia);
         pago.setFechaPago(LocalDate.now());
         if (membresia.getEstado().equals(Estado.ACTIVO)) {
         membresiasService.extenderMembresia(membresiaId, 30); 
         PagosModel pagohecho = pagosRepository.save(pago);
-        return pagohecho;
+        PagosResponseDTO pagoResponse = convertirEntidadAResponseDTO(pagohecho);
+        return pagoResponse;
         } else {
             throw new IllegalArgumentException("No se puede realizar el pago, la membresía no está activa");    
         }
-        
     }
-
+ 
     public List<PagosModel> obtenerPagosPorMembresiaId(Long membresiaId) {
     membresiasService.obtenerMembresiaPorId(membresiaId);
     return pagosRepository.findByMembresiaId(membresiaId);

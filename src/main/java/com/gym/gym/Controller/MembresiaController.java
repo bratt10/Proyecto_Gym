@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gym.gym.DTO.Request.MembresiaRequestDTO;
+import com.gym.gym.DTO.Response.MembresiaRepsonseDTO;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Services.MembresiasService;
 
@@ -26,9 +28,9 @@ public class MembresiaController {
     }
 
     @PostMapping("/{miembroID}")
-    public ResponseEntity<?> postcrearMembresia(@RequestBody MembresiasModel membresia, @PathVariable Long miembroID){
+    public ResponseEntity<?> postcrearMembresia(@RequestBody MembresiaRequestDTO membresia, @PathVariable Long miembroID){
         try {
-           MembresiasModel membresiacreada = membresiasService.crearMembresia(miembroID, membresia);
+           MembresiaRepsonseDTO membresiacreada = membresiasService.crearMembresia(miembroID, membresia);
             return ResponseEntity.ok(membresiacreada);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

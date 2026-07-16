@@ -2,6 +2,8 @@ package com.gym.gym.Services;
 
 import org.springframework.stereotype.Service;
 
+import com.gym.gym.DTO.Request.MembresiaRequestDTO;
+import com.gym.gym.DTO.Response.MembresiaRepsonseDTO;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.MiembrosModel;
@@ -20,7 +22,30 @@ public class MembresiasService {
         this.miembrosService = miembrosService;
     }
 
-    public MembresiasModel crearMembresia(Long miembroId, MembresiasModel membresia) {
+    private MembresiasModel convertirDTOaEntidad(MembresiaRequestDTO membresia, MiembrosModel miembro) {
+        MembresiasModel MembresiaDTO = new MembresiasModel();
+        MembresiaDTO.setTipoMembresia(membresia.getTipoMembresia());
+        MembresiaDTO.setFechaInicio(membresia.getFechaInicio());
+        MembresiaDTO.setFechaFin(membresia.getFechaFin());
+        MembresiaDTO.setPrecio(membresia.getPrecio());
+        MembresiaDTO.setMiembro(miembro);
+        return MembresiaDTO;
+    }
+
+    private MembresiaRepsonseDTO convertirEntidadaAResponseDTO(MembresiasModel membresia) {
+        MembresiaRepsonseDTO dto = new MembresiaRepsonseDTO();
+        dto.setId(membresia.getId());
+        dto.setTipoMembresia(membresia.getTipoMembresia().toString());
+        dto.setFechaInicio(membresia.getFechaInicio());
+        dto.setFechaFin(membresia.getFechaFin());
+        dto.setEstado(membresia.getEstado());
+        dto.setPrecio(membresia.getPrecio()); 
+        dto.setNombreMiembro(membresia.getMiembro().getNombre());
+        return dto;
+    }
+    
+
+    public MembresiaRepsonseDTO crearMembresia(Long miembroId, MembresiaRequestDTO membresia) {
         Optional<MembresiasModel> membresiaExistente = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaExistente.isPresent()) {
             throw new IllegalArgumentException("El miembro ya tiene una membresía registrada");
@@ -28,9 +53,11 @@ public class MembresiasService {
 
         Optional<MiembrosModel> miembroOptional = miembrosService.obtenerPorId(miembroId);
         MiembrosModel miembro = miembroOptional.get();
-        membresia.setMiembro(miembro);
-        membresia.setEstado(Estado.ACTIVO);
-        return membresiasRepository.save(membresia);
+        MembresiasModel membresiaEntidad = convertirDTOaEntidad(membresia, miembro);
+        membresiaEntidad.setEstado(Estado.ACTIVO);
+        MembresiasModel membresiaGuardada = membresiasRepository.save(membresiaEntidad); 
+        return convertirEntidadaAResponseDTO(membresiaGuardada);
+        
     }
     
     public Optional<MembresiasModel> obtenerMembresiaDelMiembro(Long miembroId) {
