@@ -34,13 +34,12 @@ public class MembresiasService {
 
     private MembresiaRepsonseDTO convertirEntidadaAResponseDTO(MembresiasModel membresia) {
         MembresiaRepsonseDTO dto = new MembresiaRepsonseDTO();
-        dto.setId(membresia.getId());
         dto.setTipoMembresia(membresia.getTipoMembresia().toString());
         dto.setFechaInicio(membresia.getFechaInicio());
         dto.setFechaFin(membresia.getFechaFin());
         dto.setEstado(membresia.getEstado());
         dto.setPrecio(membresia.getPrecio()); 
-        dto.setNombreMiembro(membresia.getMiembro().getNombre());
+        dto.setNombreMiembro(membresia.getMiembro().getNombre()+ " "+membresia.getMiembro().getApellido());
         return dto;
     }
     

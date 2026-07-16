@@ -38,12 +38,12 @@ public class MiembrosService {
     //Respuesta DTO 
     private MiembroResponseDTO convertirEntidadaAResponseDTO(MiembrosModel miembro){
         MiembroResponseDTO dto = new MiembroResponseDTO();
-        dto.setId(miembro.getId());
         dto.setNombre(miembro.getNombre());
         dto.setApellido(miembro.getApellido());
         dto.setEmail(miembro.getEmail());
         dto.setTelefono(miembro.getTelefono());
         dto.setNombreEntrenador(miembro.getEntrenador()!= null ? miembro.getEntrenador().getNombre(): "sin entrenador");
+        dto.setEstado(miembro.getEstado());
         return dto;
     }
 
@@ -81,6 +81,7 @@ public class MiembrosService {
             
         }
         MiembrosModel miebre1 = convertirDTOaEntidad(miebre, entrenador);
+        miebre1.setEstado(Estado.ACTIVO);
         MiembrosModel miembroGuardado = miembrosRepository.save(miebre1);
         return convertirEntidadaAResponseDTO(miembroGuardado);    
     }
