@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MembresiaRepsonseDTO {
-    private Long id;
     private String tipoMembresia;
     private LocalDate  fechaInicio;
     private LocalDate  fechaFin;

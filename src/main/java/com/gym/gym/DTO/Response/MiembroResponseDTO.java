@@ -1,5 +1,7 @@
 package com.gym.gym.DTO.Response;
 
+import com.gym.gym.Model.Estado;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MiembroResponseDTO {
-    private Long id;
     private String nombre;
     private String apellido;
     private String email;
     private String telefono;
-    private String estado;
+    private Estado estado;
     private String nombreEntrenador;
 }
