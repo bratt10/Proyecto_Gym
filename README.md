@@ -159,7 +159,7 @@ Response:
     "apellido": "Pérez",
     "email": "juan@email.com",
     "telefono": "3119999999",
-    "fechaNacimiento": "1995-05-20",
+    " fechaNacimiento": "1995-05-20",
     "fechaRegistro": "2026-07-09",
     "estado": "ACTIVO"
 }
