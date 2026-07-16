@@ -1,5 +1,5 @@
 <pre>
-Pruebas desde postman consumiento a las APIRest y su respectiva respuesta
+Pruebas desde postman consumiento a las APIRest y su respectiva respuesta. Esto antes de agregar mas validacion y DTO
 
 Crear un entrenador (No depende de nada)
 Protocolo POST: http://localhost:8080/api/entrenadores
