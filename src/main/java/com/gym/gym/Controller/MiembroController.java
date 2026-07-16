@@ -29,72 +29,43 @@ public class MiembroController {
 
     @PostMapping ("/{entrenadorId}")
     public ResponseEntity<?> postCrearMiembro(@RequestBody MiembroRequestDTO miembroDTO, @PathVariable Long entrenadorId) {        
-        try {
-            MiembroResponseDTO nuevoMiembro = miembrosService.crearMiembro(miembroDTO, entrenadorId);
-            return ResponseEntity.ok(nuevoMiembro);
-        }catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        MiembroResponseDTO nuevoMiembro = miembrosService.crearMiembro(miembroDTO, entrenadorId);
+        return ResponseEntity.ok(nuevoMiembro);
+ 
     }
     
     @GetMapping
     public ResponseEntity<?> getobtenerMiembros() {
-        try {
-            return ResponseEntity.ok(miembrosService.obtenerMiembros());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+     
+        return ResponseEntity.ok(miembrosService.obtenerMiembros());
+  
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getObtenerMiembroPorID(@PathVariable Long id) {
-        try {
-            MiembrosModel miembro = miembrosService.obtenerPorId(id).get();
-            return ResponseEntity.ok(miembro);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        MiembrosModel miembro = miembrosService.obtenerPorId(id).get();
+        return ResponseEntity.ok(miembro);
+  
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> putActualizarMiembro(@PathVariable Long id, @RequestBody MiembrosModel miembroActualizado) {
-        try {
-            MiembrosModel miembro = miembrosService.actualizarMiembro(id, miembroActualizado);
-            return ResponseEntity.ok(miembro);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        MiembrosModel miembro = miembrosService.actualizarMiembro(id, miembroActualizado);
+        return ResponseEntity.ok(miembro);
+ 
     }
 
     @PatchMapping("/{id}/estado")
     public ResponseEntity<?> patchActualizarEstadoMiembro(@PathVariable Long id, @RequestBody Estado nuevoEstado) {
-        try {
-            boolean resultado = miembrosService.actualizarEstadoMiembro(id, nuevoEstado);
-            return ResponseEntity.ok(resultado);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        boolean resultado = miembrosService.actualizarEstadoMiembro(id, nuevoEstado);
+        return ResponseEntity.ok(resultado);
+ 
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEliminarMiembro(@PathVariable Long id) {
-        try {
-            miembrosService.eliminarMiembro(id);
-            return ResponseEntity.ok("Miembro eliminado correctamente");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        miembrosService.eliminarMiembro(id);
+        return ResponseEntity.ok("Miembro eliminado correctamente");
+   
     }
 }

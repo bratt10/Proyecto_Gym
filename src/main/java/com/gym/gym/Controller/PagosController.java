@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gym.gym.Model.PagosModel;
+import com.gym.gym.DTO.Request.PagoRequestDTO;
+import com.gym.gym.DTO.Response.PagosResponseDTO;
 import com.gym.gym.Services.PagosService;
 
 @RestController
@@ -22,48 +23,27 @@ public class PagosController {
     }
 
     @PostMapping("/{miembroId}")
-    public ResponseEntity<?> postRegistrarPago(@RequestBody PagosModel pago, @PathVariable Long miembroId) {
-        try {
-            PagosModel nuevoPago = pagosService.crearPago(pago, miembroId);
-            return ResponseEntity.ok(nuevoPago);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+    public ResponseEntity<?> postRegistrarPago(@RequestBody PagoRequestDTO pago, @PathVariable Long miembroId) {
+        PagosResponseDTO nuevoPago = pagosService.crearPago(pago, miembroId);
+        return ResponseEntity.ok(nuevoPago);
     }
 
     @GetMapping("/{miembroId}")
     public ResponseEntity<?> getObtenerPagosPorMembresiaId(@PathVariable Long miembroId) {
-        try {
-            return ResponseEntity.ok(pagosService.obtenerPagosPorMembresiaId(miembroId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        return ResponseEntity.ok(pagosService.obtenerPagosPorMembresiaId(miembroId));
+    
     }
 
     @GetMapping
     public ResponseEntity<?> getObtenerTodosLosPagos() {
-        try {
-            return ResponseEntity.ok(pagosService.obtenerTodosLosPagos());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        return ResponseEntity.ok(pagosService.obtenerTodosLosPagos());
+   
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> postEliminarPago(@PathVariable Long id) {
-        try {
             pagosService.eliminarPago(id);
             return ResponseEntity.ok("Pago eliminado correctamente");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+
     }
 }

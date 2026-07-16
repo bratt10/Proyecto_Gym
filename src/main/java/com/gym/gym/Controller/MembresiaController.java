@@ -29,61 +29,37 @@ public class MembresiaController {
 
     @PostMapping("/{miembroID}")
     public ResponseEntity<?> postcrearMembresia(@RequestBody MembresiaRequestDTO membresia, @PathVariable Long miembroID){
-        try {
-           MembresiaRepsonseDTO membresiacreada = membresiasService.crearMembresia(miembroID, membresia);
-            return ResponseEntity.ok(membresiacreada);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception i){
-            return ResponseEntity.status(500).body("Error en el servidor, intente mas tarde");
-        }
+
+        MembresiaRepsonseDTO membresiacreada = membresiasService.crearMembresia(miembroID, membresia);
+        return ResponseEntity.ok(membresiacreada);
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getMembresiaDelMiembro(@PathVariable Long id) {
-       try {
-            MembresiasModel membresia = membresiasService.obtenerMembresiaDelMiembro(id).get();
-            return ResponseEntity.ok(membresia);
-       }catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        MembresiasModel membresia = membresiasService.obtenerMembresiaDelMiembro(id).get();
+        return ResponseEntity.ok(membresia);
     }
 
     @GetMapping
        public ResponseEntity<?> getmostrarTodos() {
-        try {
-            return ResponseEntity.ok(membresiasService.obtenerMembresias());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        return ResponseEntity.ok(membresiasService.obtenerMembresias());
+ 
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<?> putactualizarmembresia(@RequestBody MembresiasModel membresia, @PathVariable Long id) {
-        try {
-            MembresiasModel membresiaactualizada = membresiasService.actualizarMembresia(id, membresia);
-            return ResponseEntity.ok(membresiaactualizada);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+     
+        MembresiasModel membresiaactualizada = membresiasService.actualizarMembresia(id, membresia);
+        return ResponseEntity.ok(membresiaactualizada);
+  
 
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletemembresia(@PathVariable Long id){
-         try {
-            membresiasService.eliminarMembresia(id);
-            return ResponseEntity.ok("Miembro eliminado exitosamente");
-         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-         } catch(Exception e){
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        membresiasService.eliminarMembresia(id);
+        return ResponseEntity.ok("Miembro eliminado exitosamente");
+  
 
     }
         

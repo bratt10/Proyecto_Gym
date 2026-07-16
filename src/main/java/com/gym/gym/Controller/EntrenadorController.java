@@ -30,83 +30,43 @@ public class EntrenadorController {
 
     @PostMapping
     public ResponseEntity<?> postCrearEntrenador(@RequestBody EntrenadorRequestDTO entrenador) {
-        try {
-            EntrenadorResponseDTO nuevoEntrenador = entrenadorService.crearEntrenador(entrenador);
-            return ResponseEntity.ok(nuevoEntrenador);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        EntrenadorResponseDTO nuevoEntrenador = entrenadorService.crearEntrenador(entrenador);
+        return ResponseEntity.ok(nuevoEntrenador);
     }
 
     @GetMapping
     public ResponseEntity<?> getObtenerTodosEntrenadores() {
-        try {
-            return ResponseEntity.ok(entrenadorService.obtenerTodosEntrenadores());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        return ResponseEntity.ok(entrenadorService.obtenerTodosEntrenadores());
+ 
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getObtenerEntrenadorPorId(@PathVariable Long id) {
-        try {
-            EntrenadoresModel entrenador = entrenadorService.obtenerEntrenadorPorId(id);
-            return ResponseEntity.ok(entrenador);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        EntrenadoresModel entrenador = entrenadorService.obtenerEntrenadorPorId(id);
+        return ResponseEntity.ok(entrenador);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEntrenador(@PathVariable Long id) {
-        try {
-            entrenadorService.eliminarEntrenador(id);
-            return ResponseEntity.ok("Entrenador eliminado correctamente");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        entrenadorService.eliminarEntrenador(id);
+        return ResponseEntity.ok("Entrenador eliminado correctamente");
     }
 
     @PatchMapping ("/{id}/estado")
     public ResponseEntity<?> postCambiarEstadoEntrenador(@PathVariable Long id, @RequestBody Estado nuevoEstado) {
-        try {
-            return ResponseEntity.ok("Estado del entrenador cambiado correctamente");            
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        entrenadorService.cambiarEstadoEntrenador(id, nuevoEstado);
+        return ResponseEntity.ok("Estado del entrenador cambiado correctamente");            
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> putActualizarEntrenador(@PathVariable Long id, @RequestBody EntrenadoresModel entrenadorActualizado) {
-            try {
-                EntrenadoresModel entrenador = entrenadorService.actualizarEntrenador(id, entrenadorActualizado);
-                return ResponseEntity.ok(entrenador);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body("Error interno del servidor");
-            }
-        }
+        EntrenadoresModel entrenador = entrenadorService.actualizarEntrenador(id, entrenadorActualizado);
+        return ResponseEntity.ok(entrenador);
+    }
 
     @GetMapping("/{id}/estado")
     public ResponseEntity<?> getConsultarEstadoActivoEntrenador(@PathVariable Long id) {
-        try {
-            boolean esActivo = entrenadorService.consultarEstadoActivoEntrenador(id);
-            return ResponseEntity.ok(esActivo);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error interno del servidor");
-        }
+        boolean esActivo = entrenadorService.consultarEstadoActivoEntrenador(id);
+        return ResponseEntity.ok(esActivo);
     }
 }
