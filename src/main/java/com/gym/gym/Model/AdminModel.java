@@ -26,9 +26,9 @@ public class AdminModel {
     @Column(name = "correo", nullable = false)
     private String correo;
     @Column(name = "nombre_de_gym", nullable = false)
-    private String NombreDeGym;
+    private String nombreDeGym;
     @Column(name = "contraseña", nullable = false)
-    private String Contraseña;
+    private String contraseña;
    
 
 }
