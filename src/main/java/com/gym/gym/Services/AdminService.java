@@ -56,11 +56,11 @@ public class AdminService {
        if (admin.getNombre()==null || admin.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
-        if(adminRespository.existsByEmail(admin.getCorreo())){
-            throw new IllegalArgumentException("El correo electrónico ya está registrado");
-        }
         if(admin.getCorreo() == null || admin.getCorreo().isEmpty()){
             throw new IllegalArgumentException("El correo electrónico es obligatorio");
+        }
+        if(adminRespository.existsByCorreo(admin.getCorreo())){
+            throw new IllegalArgumentException("El correo electrónico ya está registrado");
         }
         if(admin.getNombredegym() == null || admin.getNombredegym().isEmpty()){
             throw new IllegalArgumentException("El nombre del gimnasio es obligatorio");
@@ -78,10 +78,10 @@ public class AdminService {
 
     public LoginResponse  loginadmin (LoginRequestDTO dto){
         if (dto.getCorreo() == null || dto.getCorreo().isEmpty()) {
-            throw new NullPointerException("El correo no puede ser null");
+            throw new IllegalArgumentException("El correo no puede ser null");
         }
         if (dto.getContraseña() == null || dto.getContraseña().isEmpty()) {
-            throw new NullPointerException("La contraseñña no puede ser null");
+            throw new IllegalArgumentException("La contraseña no puede ser null");
         }
 
         Optional<AdminModel> admincorreo = adminRespository.findByCorreo(dto.getCorreo());
