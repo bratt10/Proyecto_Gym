@@ -9,6 +9,7 @@ import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.MiembrosModel;
 import com.gym.gym.Respository.MembresiaRespository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +64,10 @@ public class MembresiasService {
     Optional<MembresiasModel> membresia = membresiasRepository.findByMiembroId(miembroId);
     if (membresia.isEmpty()) {
         throw new IllegalArgumentException("Membresía no encontrada para el miembro con ID: " + miembroId);
+    }
+    if (membresia.get().getFechaFin().isBefore(LocalDate.now())) {
+        membresia.get().setEstado(Estado.INACTIVO);
+        membresiasRepository.save(membresia.get());
     }
     return membresia;
     }
