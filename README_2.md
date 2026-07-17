@@ -83,4 +83,43 @@ Response:
 
 Hasta este punto solo se han agregado los DTO para los metodos POST 
 
+Se agrega la creacion de usuario admin que administra el sistema, con su respectivo login en backend, se revisa y se tiene en cuenta que la contraseña este encriptada y se hace control en la creacion de admin con DTO y de igual manera para el Login.
+
+Prueba del Login Postman 
+POST http://localhost:8080/api/admin
+Request: 
+{
+    "nombre": "Bratt",
+    "apellido": "Diaz",
+    "nombredegym": "GymBratt",
+    "correo": "admin@gym.com",
+    "contraseña": "12345"
+}
+Response:
+{
+    "nombre": "Bratt",
+    "apellido": "Diaz",
+    "nombredegym": "GymBratt",
+    "correo": "admin@gym.com"
+}
+
+Prueba de Login
+POST http://localhost:8080/api/admin/login
+Request: 
+{
+    "correo": "admin@gym.com",
+    "contraseña": "1234"
+}
+Response:
+Incorrecta:
+{
+    "success": false,
+    "message": "Correo o contraseña INCORRECTA"
+}
+Correcto:
+{
+    "success": true,
+    "message": "Ingreso exitoso. Bienvenido usuario Bratt Diaz"
+}
+
 </pre>
