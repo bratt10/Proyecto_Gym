@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.gym.gym.Config.SeguridadContraseñaEncriptada;
+import com.gym.gym.Config.SeguridadContrasenaEncriptada;
 import com.gym.gym.DTO.Request.AdminRequestDTO;
 import com.gym.gym.DTO.Request.LoginRequestDTO;
 import com.gym.gym.DTO.Response.AdminResponseDTO;
@@ -16,9 +16,8 @@ import com.gym.gym.Respository.AdminRespository;
 public class AdminService {
     
     private final AdminRespository adminRespository;
-    private final SeguridadContraseñaEncriptada seguridadContraseñaEncriptada;
-
-    public AdminService(AdminRespository adminRespository, SeguridadContraseñaEncriptada seguridadContraseñaEncriptada) {
+    private final SeguridadContrasenaEncriptada seguridadContraseñaEncriptada;
+    public AdminService(AdminRespository adminRespository, SeguridadContrasenaEncriptada seguridadContraseñaEncriptada) {
         this.adminRespository = adminRespository;
         this.seguridadContraseñaEncriptada = seguridadContraseñaEncriptada;
     }
