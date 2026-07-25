@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.gym.gym.Config.JwtUtil;
 import com.gym.gym.Config.SeguridadContrasenaEncriptada;
 import com.gym.gym.DTO.Request.AdminRequestDTO;
 import com.gym.gym.DTO.Request.LoginRequestDTO;
@@ -17,9 +18,11 @@ public class AdminService {
     
     private final AdminRespository adminRespository;
     private final SeguridadContrasenaEncriptada seguridadContraseñaEncriptada;
-    public AdminService(AdminRespository adminRespository, SeguridadContrasenaEncriptada seguridadContraseñaEncriptada) {
+    private final JwtUtil jwt;
+    public AdminService(AdminRespository adminRespository, SeguridadContrasenaEncriptada seguridadContraseñaEncriptada, JwtUtil jwt) {
         this.adminRespository = adminRespository;
         this.seguridadContraseñaEncriptada = seguridadContraseñaEncriptada;
+        this.jwt=jwt;
     }
     
 
@@ -43,10 +46,11 @@ public class AdminService {
         
     }
 
-    private LoginResponse crearLoginResponse(boolean success, String mensaje) {
+    private LoginResponse crearLoginResponse(boolean success, String mensaje, String token) {
         LoginResponse response = new LoginResponse();
         response.setSuccess(success);
         response.setMessage(mensaje);
+        response.setToken(token);
         return response;
     }
 
@@ -85,7 +89,7 @@ public class AdminService {
 
         Optional<AdminModel> admincorreo = adminRespository.findByCorreo(dto.getCorreo());
         if (admincorreo.isEmpty()) {
-            return crearLoginResponse(false, "Correo no encontrado");
+            return crearLoginResponse(false, "Correo no encontrado", null);
         }
 
         AdminModel adminexistente = admincorreo.get();
@@ -93,9 +97,10 @@ public class AdminService {
         boolean validan = seguridadContraseñaEncriptada.passwordEncoder().matches(dto.getContraseña(), adminexistente.getContraseña());
 
         if (!validan) {
-            return crearLoginResponse(validan, "Correo o contraseña INCORRECTA");
+            return crearLoginResponse(validan, "Correo o contraseña INCORRECTA", null);
         }
-        return crearLoginResponse(validan, "Ingreso exitoso. Bienvenido usuario "+ adminexistente.getNombre()+" "+adminexistente.getApellido());
+        String token = jwt.generarToken(adminexistente.getCorreo());
+        return crearLoginResponse(validan, "Ingreso exitoso. Bienvenido usuario "+ adminexistente.getNombre()+" "+adminexistente.getApellido(), token);
     }
    
     
