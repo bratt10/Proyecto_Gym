@@ -85,7 +85,7 @@ Hasta este punto solo se han agregado los DTO para los metodos POST
 
 Se agrega la creacion de usuario admin que administra el sistema, con su respectivo login en backend, se revisa y se tiene en cuenta que la contraseña este encriptada y se hace control en la creacion de admin con DTO y de igual manera para el Login.
 
-Prueba del Login Postman 
+Prueba de crear admin en Postman 
 POST http://localhost:8080/api/admin
 Request: 
 {
