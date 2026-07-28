@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.gym.gym.DTO.Request.MembresiaRequestDTO;
 import com.gym.gym.DTO.Response.MembresiaRepsonseDTO;
+import com.gym.gym.Exception.DuplicateResourceException;
+import com.gym.gym.Exception.ResourceNotFoundException;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.MiembrosModel;
@@ -48,7 +50,7 @@ public class MembresiasService {
     public MembresiaRepsonseDTO crearMembresia(Long miembroId, MembresiaRequestDTO membresia) {
         Optional<MembresiasModel> membresiaExistente = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaExistente.isPresent()) {
-            throw new IllegalArgumentException("El miembro ya tiene una membresía registrada");
+            throw new DuplicateResourceException("El miembro ya tiene una membresía registrada");
         }
 
         Optional<MiembrosModel> miembroOptional = miembrosService.obtenerPorId(miembroId);
@@ -63,7 +65,7 @@ public class MembresiasService {
     public Optional<MembresiasModel> obtenerMembresiaDelMiembro(Long miembroId) {
     Optional<MembresiasModel> membresia = membresiasRepository.findByMiembroId(miembroId);
     if (membresia.isEmpty()) {
-        throw new IllegalArgumentException("Membresía no encontrada para el miembro con ID: " + miembroId);
+        throw new ResourceNotFoundException("Membresía no encontrada para el miembro con ID: " + miembroId);
     }
     if (membresia.get().getFechaFin().isBefore(LocalDate.now())) {
         membresia.get().setEstado(Estado.INACTIVO);
@@ -80,7 +82,7 @@ public class MembresiasService {
     public MembresiasModel actualizarMembresia(Long miembroID, MembresiasModel membresiaActualizada) {
         Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroID);
         if (membresiaOptional.isEmpty()) {
-            throw new IllegalArgumentException("Membresía no encontrada");
+            throw new ResourceNotFoundException("Membresía no encontrada");
         }
         MembresiasModel membresiaExistente = membresiaOptional.get();
         membresiaExistente.setTipoMembresia(membresiaActualizada.getTipoMembresia());
@@ -95,7 +97,7 @@ public class MembresiasService {
     public void eliminarMembresia(Long miembroId) {
         Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaOptional.isEmpty()) {
-            throw new IllegalArgumentException("Membresía no encontrada");
+            throw new ResourceNotFoundException("Membresía no encontrada");
         }
         MembresiasModel membresia = membresiaOptional.get();
         membresiasRepository.delete(membresia);
@@ -104,7 +106,7 @@ public class MembresiasService {
     public boolean actualizarEstadoMembresia(Long miembroId, Estado nuevoEstado) {
         Optional<MembresiasModel> membresiaOptional = membresiasRepository.findByMiembroId(miembroId);
         if (membresiaOptional.isEmpty()) {
-            throw new IllegalArgumentException("Membresía no encontrada");
+            throw new ResourceNotFoundException("Membresía no encontrada");
         }
         MembresiasModel membresia = membresiaOptional.get();
         membresia.setEstado(nuevoEstado);
@@ -119,6 +121,6 @@ public class MembresiasService {
 
     public MembresiasModel obtenerMembresiaPorId(Long id) {
     return membresiasRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Membresía no encontrada con ID: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Membresía no encontrada con ID: " + id));
     }
 }

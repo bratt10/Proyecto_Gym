@@ -4,14 +4,16 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.gym.gym.Config.JwtUtil;
-import com.gym.gym.Config.SeguridadContrasenaEncriptada;
 import com.gym.gym.DTO.Request.AdminRequestDTO;
 import com.gym.gym.DTO.Request.LoginRequestDTO;
 import com.gym.gym.DTO.Response.AdminResponseDTO;
 import com.gym.gym.DTO.Response.LoginResponse;
+import com.gym.gym.Exception.BusinessException;
+import com.gym.gym.Exception.DuplicateResourceException;
 import com.gym.gym.Model.AdminModel;
 import com.gym.gym.Respository.AdminRespository;
+import com.gym.gym.config.JwtUtil;
+import com.gym.gym.config.SeguridadContrasenaEncriptada;
 
 @Service
 public class AdminService {
@@ -57,19 +59,19 @@ public class AdminService {
 
     public AdminResponseDTO crearAdmin(AdminRequestDTO admin){
        if (admin.getNombre()==null || admin.getNombre().isEmpty()) {
-            throw new IllegalArgumentException("El nombre es obligatorio");
+            throw new BusinessException("El nombre es obligatorio");
         }
         if(admin.getCorreo() == null || admin.getCorreo().isEmpty()){
-            throw new IllegalArgumentException("El correo electrónico es obligatorio");
+            throw new BusinessException("El correo electrónico es obligatorio");
         }
         if(adminRespository.existsByCorreo(admin.getCorreo())){
-            throw new IllegalArgumentException("El correo electrónico ya está registrado");
+            throw new DuplicateResourceException("El correo electrónico ya está registrado");
         }
         if(admin.getNombredegym() == null || admin.getNombredegym().isEmpty()){
-            throw new IllegalArgumentException("El nombre del gimnasio es obligatorio");
+            throw new BusinessException("El nombre del gimnasio es obligatorio");
         }
         if(admin.getContraseña() == null || admin.getContraseña().isEmpty()){
-            throw new IllegalArgumentException("La contraseña es obligatoria");
+            throw new BusinessException("La contraseña es obligatoria");
         }
         String contraseñaEncriptada = seguridadContraseñaEncriptada.passwordEncoder().encode(admin.getContraseña());
         admin.setContraseña(contraseñaEncriptada);
@@ -81,10 +83,10 @@ public class AdminService {
 
     public LoginResponse  loginadmin (LoginRequestDTO dto){
         if (dto.getCorreo() == null || dto.getCorreo().isEmpty()) {
-            throw new IllegalArgumentException("El correo no puede ser null");
+            throw new BusinessException("El correo no puede ser null");
         }
         if (dto.getContraseña() == null || dto.getContraseña().isEmpty()) {
-            throw new IllegalArgumentException("La contraseña no puede ser null");
+            throw new BusinessException("La contraseña no puede ser null");
         }
 
         Optional<AdminModel> admincorreo = adminRespository.findByCorreo(dto.getCorreo());

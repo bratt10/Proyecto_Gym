@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.gym.gym.DTO.Request.PagoRequestDTO;
 import com.gym.gym.DTO.Response.PagosResponseDTO;
+import com.gym.gym.Exception.BusinessException;
+import com.gym.gym.Exception.ResourceNotFoundException;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Model.MembresiasModel;
 import com.gym.gym.Model.PagosModel;
@@ -49,7 +51,7 @@ public class PagosService {
         PagosResponseDTO pagoResponse = convertirEntidadAResponseDTO(pagohecho);
         return pagoResponse;
         } else {
-            throw new IllegalArgumentException("No se puede realizar el pago, la membresía no está activa");    
+            throw new BusinessException("No se puede realizar el pago, la membresía no está activa");    
         }
     }
  
@@ -61,14 +63,14 @@ public class PagosService {
     public List<PagosModel> obtenerTodosLosPagos() {
        List<PagosModel> pagos = pagosRepository.findAll();
         if(pagos.isEmpty()) { 
-            throw new IllegalArgumentException("No hay pagos registrados");
+            throw new ResourceNotFoundException("No hay pagos registrados");
         } 
         return pagos;
     }
     
     public void eliminarPago(Long id){
         if(!pagosRepository.existsById(id)){
-            throw new IllegalArgumentException("El pago no existe");
+            throw new ResourceNotFoundException("El pago no existe");
         }
         pagosRepository.deleteById(id);
     }

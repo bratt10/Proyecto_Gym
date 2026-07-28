@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.gym.gym.DTO.Request.EntrenadorRequestDTO;
 import com.gym.gym.DTO.Response.EntrenadorResponseDTO;
+import com.gym.gym.Exception.BusinessException;
+import com.gym.gym.Exception.DuplicateResourceException;
+import com.gym.gym.Exception.ResourceNotFoundException;
 import com.gym.gym.Model.EntrenadoresModel;
 import com.gym.gym.Model.Estado;
 import com.gym.gym.Respository.EntrenadoresRepository;
@@ -39,22 +42,22 @@ public class EntrenadorService {
     public EntrenadorResponseDTO crearEntrenador(EntrenadorRequestDTO dto) {
         EntrenadoresModel entrenador = convertirDTOaEntidad(dto);
         if ( entrenadorRepository.existsByNombreAndApellido(entrenador.getNombre(), entrenador.getApellido())) {
-            throw new IllegalArgumentException("El entrenador ya está registrado");
+            throw new DuplicateResourceException("El entrenador ya está registrado");
         }
         
         if(entrenador.getNombre() == null || entrenador.getNombre().isEmpty()){
-            throw new IllegalArgumentException("El nombre es obligatorio");
+            throw new BusinessException("El nombre es obligatorio");
         }
         if(entrenador.getApellido() == null || entrenador.getApellido().isEmpty()){
-            throw new IllegalArgumentException("El apellido es obligatorio");
+            throw new BusinessException("El apellido es obligatorio");
         }
         if(entrenador.getTelefono() == null || entrenador.getTelefono().isEmpty()){
-            throw new IllegalArgumentException("El teléfono es obligatorio");
+            throw new BusinessException("El teléfono es obligatorio");
         } else if(!entrenador.getTelefono().matches("[0-9]+")){
-            throw new IllegalArgumentException("El teléfono debe tener 10 dígitos");
+            throw new BusinessException("El teléfono debe tener 10 dígitos");
         }
         if(entrenador.getEspecialidad() == null || entrenador.getEspecialidad().isEmpty()){
-            throw new IllegalArgumentException("La especialidad es obligatoria");
+            throw new BusinessException("La especialidad es obligatoria");
         }
         entrenador.setEstado(Estado.ACTIVO);
         EntrenadoresModel entrenadorGuardado = entrenadorRepository.save(entrenador);
@@ -67,23 +70,20 @@ public class EntrenadorService {
 
     public EntrenadoresModel obtenerEntrenadorPorId(Long id) {
         if (id == null || id <= 0) {
-            throw new IllegalArgumentException("El ID del entrenador no es válido");
+            throw new BusinessException("El ID del entrenador no es válido");
         }
-        return entrenadorRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Entrenador no encontrado"));
+        return entrenadorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entrenador no encontrado"));
     }
     
     public void eliminarEntrenador(Long id) {
         if (!entrenadorRepository.existsById(id)) {
-            throw new IllegalArgumentException("Entrenador no encontrado");
+            throw new ResourceNotFoundException("Entrenador no encontrado");
         }
         entrenadorRepository.deleteById(id);
     }
 
     public boolean cambiarEstadoEntrenador(Long id, Estado estado) {
         EntrenadoresModel entrenador = obtenerEntrenadorPorId(id);
-        if (entrenador == null) {
-            throw new IllegalArgumentException("Entrenador no encontrado");
-        }
         entrenador.setEstado(estado);
         entrenadorRepository.save(entrenador);
         return true;
@@ -109,7 +109,7 @@ public class EntrenadorService {
     public boolean consultarEstadoActivoEntrenador(Long id) {
         EntrenadoresModel entrenador = obtenerEntrenadorPorId(id);
         if (entrenador == null) {
-            throw new IllegalArgumentException("Entrenador no encontrado");
+            throw new BusinessException("Entrenador no encontrado");
         }
         return entrenador.getEstado() == Estado.ACTIVO;
     }

@@ -1,4 +1,4 @@
-package com.gym.gym.Config;
+package com.gym.gym.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
