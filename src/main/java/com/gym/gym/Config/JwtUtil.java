@@ -1,5 +1,4 @@
-package com.gym.gym.Config;
-
+package com.gym.gym.config;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -39,6 +38,7 @@ public class JwtUtil {
             extraerCorreo(token);
             return true;
         } catch (Exception e) {
+            System.out.println(">>> ERROR JWT: " + e.getMessage());
             return false;
         }
     }

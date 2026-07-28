@@ -1,4 +1,4 @@
-package com.gym.gym.Config;
+package com.gym.gym.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
