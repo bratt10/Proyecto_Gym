@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gym.gym.DTO.Request.PagoRequestDTO;
 import com.gym.gym.DTO.Response.PagosResponseDTO;
 import com.gym.gym.Services.PagosService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/pagos")
@@ -39,6 +41,11 @@ public class PagosController {
         return ResponseEntity.ok(pagosService.obtenerTodosLosPagos());
    
     }
+    @GetMapping("/paginado")
+    public ResponseEntity<?> pagosPaginados(@RequestParam (defaultValue ="10")int page, @RequestParam (defaultValue = "0") int size, @RequestParam(defaultValue="fechaPago")String sort) {
+        return ResponseEntity.ok(pagosService.obtenerpagospaginados(page, size, sort));
+    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> postEliminarPago(@PathVariable Long id) {

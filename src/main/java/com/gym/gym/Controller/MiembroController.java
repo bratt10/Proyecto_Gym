@@ -1,6 +1,7 @@
 package com.gym.gym.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gym.gym.DTO.Request.MiembroRequestDTO;
@@ -39,6 +40,11 @@ public class MiembroController {
      
         return ResponseEntity.ok(miembrosService.obtenerMiembros());
   
+    }
+    @GetMapping("/paginado")
+    public ResponseEntity<?> getMiembrosPaginados( @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "nombre") String sort) {
+        return ResponseEntity.ok(miembrosService.obtenermiembrosPaginados(page, size, sort));
     }
 
     @GetMapping("/{id}")

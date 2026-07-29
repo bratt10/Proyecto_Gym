@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gym.gym.DTO.Request.MiembroRequestDTO;
@@ -95,6 +99,10 @@ public class MiembrosService {
             throw new ResourceNotFoundException("No hay miembros registrados");
         }
         return miembros;
+    }
+    public Page<MiembrosModel> obtenermiembrosPaginados(int page, int size, String sort){
+        Pageable pages = PageRequest.of(page, size, Sort.by(sort));
+        return miembrosRepository.findAll(pages);
     }
 
     public Optional<MiembrosModel> obtenerPorId(Long id) {

@@ -2,6 +2,10 @@ package com.gym.gym.Services;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gym.gym.DTO.Request.PagoRequestDTO;
@@ -66,6 +70,11 @@ public class PagosService {
             throw new ResourceNotFoundException("No hay pagos registrados");
         } 
         return pagos;
+    }
+
+    public Page<PagosModel> obtenerpagospaginados(int page, int size, String sort){
+        Pageable pages = PageRequest.of(page, size, Sort.by(sort));
+        return pagosRepository.findAll(pages);
     }
     
     public void eliminarPago(Long id){
