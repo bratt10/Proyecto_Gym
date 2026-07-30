@@ -66,7 +66,7 @@ public class MiembrosService {
         }
         if(miebre.getTelefono() == null || miebre.getTelefono().isEmpty()){ 
             throw new BusinessException("El teléfono es obligatorio");
-        } else if(!miebre.getTelefono().matches("[0-9]+")){
+        } else if(!miebre.getTelefono().matches("\\d{10}")){
             throw new BusinessException("El teléfono debe tener 10 dígitos");
         }
         if(miebre.getEmail() == null || miebre.getEmail().isEmpty()){
