@@ -52,5 +52,5 @@ public class PagosController {
             pagosService.eliminarPago(id);
             return ResponseEntity.ok("Pago eliminado correctamente");
 
-    }
+    }   
 }
