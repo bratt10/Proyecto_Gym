@@ -53,7 +53,7 @@ public class EntrenadorService {
         }
         if(entrenador.getTelefono() == null || entrenador.getTelefono().isEmpty()){
             throw new BusinessException("El teléfono es obligatorio");
-        } else if(!entrenador.getTelefono().matches("[0-9]+")){
+        } else if(!entrenador.getTelefono().matches("\\d[0-9]+")){
             throw new BusinessException("El teléfono debe tener 10 dígitos");
         }
         if(entrenador.getEspecialidad() == null || entrenador.getEspecialidad().isEmpty()){
