@@ -114,7 +114,7 @@ GET /api/pagos/paginado?page=0&size=3&sort=fechaPago
     "totalPages": 1
 }
 ```
-
+ 
 ---
 
 # Información que devuelve Page<T>
